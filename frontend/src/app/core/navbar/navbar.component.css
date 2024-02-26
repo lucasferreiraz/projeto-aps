@@ -1,0 +1,28 @@
+.header {
+  background-color: #3b82f6
+}
+
+:host ::ng-deep .p-menu {
+  border: none;
+  width: 100%;
+}
+
+:host ::ng-deep .p-menu .p-menuitem > .p-menuitem-content {
+  border-radius: 10px;
+  background-color: ffffff;
+  border: solid 1px #ffffff;
+}
+
+:host ::ng-deep .p-menu .p-menuitem:not(.p-highlight):not(.p-disabled) > .p-menuitem-content:hover {
+  border: solid 1px #404C51;
+  background-color: #ffffff;
+}
+
+:host ::ng-deep .p-menu .p-menuitem:not(.p-highlight):not(.p-disabled).p-focus > .p-menuitem-content {
+  border: solid 1px #404C51;
+  background-color: #ffffff;
+}
+
+:host ::ng-deep .p-menu .p-menuitem > .p-menuitem-content .p-menuitem-link {
+  padding: 0.75rem;
+}

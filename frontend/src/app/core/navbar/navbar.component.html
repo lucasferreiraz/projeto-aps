@@ -1,0 +1,29 @@
+<div class="header">
+  <div class="container">
+    <div class="grid">
+      <div class="col-12" style="margin-top: 10px;">
+        <a (click)="exibindoMenu = !exibindoMenu">
+          <i class="pi pi-bars" style="color: white; font-size: 2rem;"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p-sidebar [(visible)]="exibindoMenu" position="left" class="navbar">
+  <ng-template pTemplate="header">
+    <h2>{{ usuarioLogado }}</h2>
+  </ng-template>
+
+  <ng-template pTemplate="content">
+    <p-menu [model]="menuItens"></p-menu>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <p-button
+      icon="pi pi-sign-out"
+      styleClass="p-button-rounded p-button-danger p-button-outlined"
+      (click)="logout()">
+    </p-button>
+  </ng-template>
+</p-sidebar>

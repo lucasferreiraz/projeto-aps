@@ -1,0 +1,68 @@
+/* You can add global styles to this file, and also import other style files */
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+@import "~primeflex/primeflex.css";
+@import "primeicons/primeicons.css";
+
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  color: #404C51;
+}
+
+a {
+  color: #337ab7;
+  text-decoration: none;
+}
+
+a:hover, a:focus {
+  text-decoration: underline;
+}
+
+label {
+  font-weight: bold;
+}
+
+.block {
+  display: block;
+}
+
+@media(min-width: 1200px) {
+  .container {
+    width: 1170px;
+    margin: 0 auto;
+  }
+}
+
+@media(min-width: 1025px) and (max-width: 1199px) {
+  .container {
+    width: 995px;
+    margin: 0 auto;
+  }
+}
+
+@media(min-width: 769px) and (max-width: 1024px) {
+  .container {
+    width: 739px;
+    margin: 0 auto;
+  }
+}
+
+@media(min-width: 481px) and (max-width: 768px) {
+  .container {
+    width: 430px;
+    margin: 0 auto;
+  }
+}
+
+@media(min-width: 320px) and (max-width: 480px) {
+  .container {
+    width: 320px;
+    margin: 0 auto;
+  }
+}
+
+.col-acoes {
+  width: 150px;
+  text-align: center;
+}
