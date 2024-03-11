@@ -1,0 +1,51 @@
+<div class="grid">
+  <div class="col-12">
+    <p-table
+      [value]="veiculos"
+      [paginator]="true"
+      [rows]="itensPorPagina"
+      [totalRecords]="totalRegistros"
+      [lazy]="true"
+      (onLazyLoad)="aoMudarPagina($event)"
+      responsiveLayout="stack"
+      styleClass="p-datatable-gridlines"
+      #tabela>
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Placa</th>
+          <th>Modelo</th>
+          <th>Cor</th>
+          <th class="col-acoes">Ações</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-veiculo>
+        <tr>
+          <td>{{ veiculo.placa }}</td>
+          <td>{{ veiculo.modelo }}</td>
+          <td>{{ veiculo.cor }}</td>
+          <td>
+            <div class="flex gap-3">
+              <button
+                pButton
+                pTooltip="Editar"
+                tooltipPosition="top"
+                [routerLink]="['/veiculos', veiculo.id]"
+                >
+                <i class="pi pi-pencil"></i>
+              </button>
+              <button
+                pButton
+                pTooltip="Excluir"
+                tooltipPosition="top"
+                class="p-button-danger"
+                (click)="confirmarExclusao(veiculo)"
+                >
+                <i class="pi pi-trash"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>

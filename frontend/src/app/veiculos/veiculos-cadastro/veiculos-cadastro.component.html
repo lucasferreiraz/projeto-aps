@@ -1,0 +1,72 @@
+<div class="container">
+  <form #cadLancamentoForm="ngForm" (ngSubmit)="salvar()">
+    <div class="grid">
+
+      <div class="col-12">
+        <h1>{{ editando ? 'Edição de' : 'Novo' }} Veículo</h1>
+      </div>
+
+      <div class="col-12 md:col-4">
+        <label class="block">Placa</label>
+        <input pInputText type="text" class="w-12"
+          name="placa"
+          ngModel
+          #placa="ngModel"
+          required
+          minlength="1"
+          [(ngModel)]="veiculo.placa">
+
+        <app-message [control]="placa" error="required" text="Informe uma placa"></app-message>
+
+        <app-message [control]="placa" error="minlength"
+          text="Mínimo de {{ placa.errors?.['minlength']?.requiredLength }} caracteres.">
+        </app-message>
+      </div>
+
+      <div class="col-12 md:col-4">
+        <label class="block">Modelo</label>
+        <input pInputText type="text" class="w-12"
+          name="modelo"
+          ngModel
+          #modelo="ngModel"
+          required
+          minlength="1"
+          [(ngModel)]="veiculo.modelo">
+
+        <app-message [control]="modelo" error="required" text="Informe um modelo"></app-message>
+
+        <app-message [control]="modelo" error="minlength"
+          text="Mínimo de {{ modelo.errors?.['minlength']?.requiredLength }} caracteres.">
+        </app-message>
+      </div>
+
+      <div class="col-12 md:col-4">
+        <label class="block">Cor</label>
+        <input pInputText type="text" class="w-12"
+          name="cor"
+          ngModel
+          #cor="ngModel"
+          required
+          minlength="1"
+          [(ngModel)]="veiculo.cor">
+
+        <app-message [control]="cor" error="required" text="Informe uma cor"></app-message>
+
+        <app-message [control]="cor" error="minlength"
+          text="Mínimo de {{ cor.errors?.['minlength']?.requiredLength }} caracteres.">
+        </app-message>
+      </div>
+
+      <div class="flex justify-content-start align-items-center p-2 gap-3 w-12">
+        <button pButton type="submit" label="Salvar"
+          [disabled]="cadLancamentoForm.invalid">
+        </button>
+        <button pButton type="button" label="Novo" class="p-button-info"
+        (click)="novo(cadLancamentoForm)">
+        </button>
+        <a routerLink="/veiculos">Voltar para a pesquisa</a>
+      </div>
+
+    </div>
+  </form>
+</div>
