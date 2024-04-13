@@ -16,38 +16,44 @@ import com.aps.sige.entities.Veiculo;
 import com.aps.sige.repositories.VeiculoRepository;
 
 @Service
-public class VeiculoService {
+public class VeiculoService implements ICRUDService.SaveService<Veiculo>, ICRUDService.UpdateService<Veiculo>,
+        ICRUDService.DeleteService, ICRUDService.FindService<Veiculo> {
 
     @Autowired
     private VeiculoRepository veiculoRepository;
 
+    @Override
     public Page<Veiculo> findAllPaged(Pageable pageable) {
         Page<Veiculo> list = veiculoRepository.findAll(pageable);
         return list;
     }
 
+    @Override
     public Veiculo findById(Long id) {
         Optional<Veiculo> obj = veiculoRepository.findById(id);
         Veiculo entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found or not exist."));
         return entity;
     }
 
+    @Override
     public Veiculo save(Veiculo veiculo) {
         return veiculoRepository.save(veiculo);
     }
 
+    @Override
     public Veiculo update(Long id, Veiculo veiculo) {
         Veiculo savedVeiculo = findExistentVeiculo(id);
 
         BeanUtils.copyProperties(veiculo, savedVeiculo, "id");
         return veiculoRepository.save(savedVeiculo);
     }
-
+    
     private Veiculo findExistentVeiculo(Long id) {
         return veiculoRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException());
     }
 
+    @Override
     public void delete(Long id) {
         try {
             veiculoRepository.deleteById(id);
