@@ -99,6 +99,8 @@ export class VeiculosCadastroComponent implements OnInit {
     this.veiculoService.findByIdWithDetails(id)
       .subscribe(veiculo => {
         this.veiculoModel = veiculo
+        this.vaga.posicao = veiculo.posicao
+        this.estacionamento.nome = veiculo.estacionamentoNome
         this.atualizarTituloEdicao()
       })
   }

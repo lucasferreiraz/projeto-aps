@@ -2,9 +2,6 @@
   <form #cadLancamentoForm="ngForm" (ngSubmit)="salvar()">
     <div class="grid">
 
-      <pre>{{ veiculoCadastro | json }}</pre>
-      <pre>{{ veiculoAtualizar | json }}</pre>
-
       <div class="col-12">
         <h1>{{ editando ? 'Edição de' : 'Novo' }} Veículo</h1>
       </div>
@@ -68,7 +65,7 @@
               #estacionamentoField="ngModel"
               readonly
               required
-              [(ngModel)]="veiculoModel.estacionamentoNome"
+              [(ngModel)]="estacionamento.nome"
               (input)="estacionamento = $any($event.target).value"
               type="text"
               pInputText
@@ -173,7 +170,7 @@
               #vagaField="ngModel"
               readonly
               required
-              [(ngModel)]="veiculoModel.posicao"
+              [(ngModel)]="vaga.posicao"
               (input)="vaga = $any($event.target).value"
               type="text"
               pInputText
