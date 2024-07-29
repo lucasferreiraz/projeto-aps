@@ -12,35 +12,55 @@ import org.springframework.stereotype.Service;
 
 import com.aps.sige.auth.services.exceptions.DatabaseException;
 import com.aps.sige.auth.services.exceptions.ResourceNotFoundException;
+import com.aps.sige.dtos.VeiculoAtualizacaoDto;
+import com.aps.sige.dtos.VeiculoCadastroDto;
+import com.aps.sige.dtos.VeiculoResponseDto;
+import com.aps.sige.entities.Estacionamento;
+import com.aps.sige.entities.Vaga;
 import com.aps.sige.entities.Veiculo;
+import com.aps.sige.repositories.EstacionamentoRepository;
+import com.aps.sige.repositories.VagaRepository;
 import com.aps.sige.repositories.VeiculoRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
-public class VeiculoService implements ICRUDService.SaveService<Veiculo>, ICRUDService.UpdateService<Veiculo>,
-        ICRUDService.DeleteService, ICRUDService.FindService<Veiculo> {
+public class VeiculoService {
 
     @Autowired
     private VeiculoRepository veiculoRepository;
 
-    @Override
+    @Autowired
+    private VagaRepository vagaRepository;
+
+    @Autowired
+    private EstacionamentoRepository estacionamentoRepository;
+
     public Page<Veiculo> findAllPaged(Pageable pageable) {
         Page<Veiculo> list = veiculoRepository.findAll(pageable);
         return list;
     }
 
-    @Override
+    public Page<VeiculoResponseDto> findAllDetailsPaged(Pageable pageable) {
+        Page<VeiculoResponseDto> list = veiculoRepository.findAllVeiculosWithDetails(pageable);
+        return list;
+    }
+
     public Veiculo findById(Long id) {
         Optional<Veiculo> obj = veiculoRepository.findById(id);
         Veiculo entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found or not exist."));
         return entity;
     }
 
-    @Override
+    public VeiculoResponseDto findVeiculoById(Long veiculoId) {
+        Optional<VeiculoResponseDto> veiculoOpt = veiculoRepository.findByIdWithDetails(veiculoId);
+        return veiculoOpt.orElseThrow(() -> new ResourceNotFoundException("Veículo não encontrado"));
+    }
+
     public Veiculo save(Veiculo veiculo) {
         return veiculoRepository.save(veiculo);
     }
 
-    @Override
     public Veiculo update(Long id, Veiculo veiculo) {
         Veiculo savedVeiculo = findExistentVeiculo(id);
 
@@ -53,7 +73,6 @@ public class VeiculoService implements ICRUDService.SaveService<Veiculo>, ICRUDS
                 .orElseThrow(() -> new IllegalArgumentException());
     }
 
-    @Override
     public void delete(Long id) {
         try {
             veiculoRepository.deleteById(id);
@@ -62,6 +81,106 @@ public class VeiculoService implements ICRUDService.SaveService<Veiculo>, ICRUDS
         } catch (DataIntegrityViolationException e) {
             throw new DatabaseException("Integrity violation");
         }
+    }
 
+    @Transactional
+    public void cadastrarVeiculo(VeiculoCadastroDto veiculoCadastroDto) {
+        Veiculo veiculo = new Veiculo();
+        veiculo.setPlaca(veiculoCadastroDto.getPlaca());
+        veiculo.setModelo(veiculoCadastroDto.getModelo());
+        veiculo.setCor(veiculoCadastroDto.getCor());
+
+        veiculo = veiculoRepository.save(veiculo);
+
+        Optional<Vaga> vagaOptional = vagaRepository.findByEstacionamentoIdAndPosicao(
+                veiculoCadastroDto.getEstacionamentoId(),
+                veiculoCadastroDto.getPosicaoVaga());
+
+        if (vagaOptional.isPresent()) {
+            Vaga vaga = vagaOptional.get();
+            vaga.setVeiculo(veiculo);
+            vagaRepository.save(vaga);
+        } else {
+            throw new ResourceNotFoundException("Vaga não encontrada.");
+        }
+    }
+
+    @Transactional
+    public void removerVeiculo(Long veiculoId) {
+        Veiculo veiculo = veiculoRepository.findById(veiculoId)
+                .orElseThrow(() -> new ResourceNotFoundException("Veículo não encontrado"));
+
+        Optional<Vaga> vagaOptional = vagaRepository.findByVeiculoId(veiculoId);
+        if (vagaOptional.isPresent()) {
+            Vaga vaga = vagaOptional.get();
+            vaga.setVeiculo(null);
+            vagaRepository.save(vaga);
+        }
+
+        veiculoRepository.delete(veiculo);
+    }
+
+    @Transactional
+    public VeiculoResponseDto atualizarVeiculo(VeiculoAtualizacaoDto dto) {
+        // Encontra o veículo
+        Veiculo veiculo = veiculoRepository.findById(dto.getVeiculoId())
+                .orElseThrow(() -> new RuntimeException("Veículo não encontrado"));
+
+        // Atualiza as informações do veículo
+        veiculo.setPlaca(dto.getPlaca());
+        veiculo.setModelo(dto.getModelo());
+        veiculo.setCor(dto.getCor());
+
+        Optional<Vaga> vagaOpt = vagaRepository.findByVeiculoId(dto.getVeiculoId());
+        if (vagaOpt.isPresent()) {
+            Vaga vaga = vagaOpt.get();
+            vaga.setVeiculo(null);
+            vagaRepository.save(vaga);
+        }
+
+        // Encontra a vaga e o estacionamento
+        Optional<Vaga> vagaOptional = vagaRepository.findById(dto.getVagaId());
+        if (vagaOptional.isPresent()) {
+            Vaga vaga = vagaOptional.get();
+
+            // Verifica se a vaga é a mesma do veículo
+            if (vaga.getVeiculo() != null && !vaga.getVeiculo().getId().equals(dto.getVeiculoId())) {
+                throw new RuntimeException("A vaga não pertence ao veículo especificado.");
+            }
+
+            // Atualiza a vaga e o estacionamento
+            Estacionamento estacionamento = estacionamentoRepository.findById(dto.getEstacionamentoId())
+                    .orElseThrow(() -> new RuntimeException("Estacionamento não encontrado"));
+
+            // Desassociar o veículo da vaga antiga
+            if (vaga.getVeiculo() != null) {
+                vaga.setVeiculo(null); // Define a vaga do veículo como null
+            }
+
+            vaga.setVeiculo(veiculo); // Associa o veículo à nova vaga
+            vaga.setEstacionamento(estacionamento);
+
+            vagaRepository.save(vaga);
+        } else {
+            throw new RuntimeException("Vaga não encontrada");
+        }
+
+        // Atualiza o veículo
+        veiculoRepository.save(veiculo);
+
+        // Cria o DTO para resposta
+        Vaga vagaAtualizada = vagaRepository.findById(dto.getVagaId())
+                .orElseThrow(() -> new RuntimeException("Vaga não encontrada após atualização"));
+
+        return new VeiculoResponseDto(
+                veiculo.getId(),
+                veiculo.getPlaca(),
+                veiculo.getModelo(),
+                veiculo.getCor(),
+                vagaAtualizada.getId(),
+                vagaAtualizada.getPosicao(),
+                vagaAtualizada.getEstacionamento().getId(),
+                vagaAtualizada.getEstacionamento().getNome()
+        );
     }
 }

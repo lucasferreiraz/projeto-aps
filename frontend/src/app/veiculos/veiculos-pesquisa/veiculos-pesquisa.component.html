@@ -44,6 +44,11 @@
   </app-veiculos-grid>
 
   <div class="col-12">
-    <button pButton label="Novo Lançamento" routerLink="/veiculos/novo"></button>
+    <button
+      pButton label="Novo Lançamento"
+      routerLink="/veiculos/novo"
+      [disabled]="naoTemPermissao('ROLE_ADMIN')"
+      >
+    </button>
   </div>
 </div>

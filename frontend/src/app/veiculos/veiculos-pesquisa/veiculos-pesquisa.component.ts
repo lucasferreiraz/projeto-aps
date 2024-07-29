@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { VeiculoFiltro, VeiculoService } from '../veiculo.service';
 import { ErrorHandlerService } from 'src/app/core/error-handler.service';
 import { Title } from '@angular/platform-browser';
+import { AuthService } from 'src/app/seguranca/auth.service';
 
 @Component({
   selector: 'app-veiculos-pesquisa',
@@ -19,7 +20,8 @@ export class VeiculosPesquisaComponent implements OnInit {
   constructor(
     private veiculoService: VeiculoService,
     private errorHandler: ErrorHandlerService,
-    private title: Title
+    private title: Title,
+    private auth: AuthService
   ) { }
 
   ngOnInit(): void {
@@ -29,7 +31,7 @@ export class VeiculosPesquisaComponent implements OnInit {
   pesquisar(pagina = 0) {
     this.filtro.pagina = pagina
     this.veiculoService.buscaPorId(4)
-    this.veiculoService.pesquisar(this.filtro)
+    this.veiculoService.pesquisarWithDetails(this.filtro)
       .subscribe(
         data => {
           this.itensPorPagina = data['size']
@@ -44,5 +46,9 @@ export class VeiculosPesquisaComponent implements OnInit {
 
   onExcluirLancamento() {
     this.pesquisar()
+  }
+
+  naoTemPermissao (permissao: string) {
+    return !this.auth.temPermissao(permissao);
   }
 }

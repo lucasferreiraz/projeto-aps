@@ -1,7 +1,7 @@
 package com.aps.sige.config;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,11 +61,12 @@ public class SecurityConfiguration {
 		CorsConfiguration configuration = new CorsConfiguration();
 
         String corsOrigins = environment.getProperty("cors.origins");
-        List<String> allowedOrigins = new ArrayList<>(Arrays.asList(corsOrigins.split(",")));
+        List<String> allowedOrigins = Arrays.asList(corsOrigins.split(","));
 
-		configuration.setAllowedOriginPatterns(allowedOrigins);
+        configuration.setAllowCredentials(true);
+		configuration.setAllowedOriginPatterns(Collections.singletonList("*"));
 		configuration.setAllowedMethods(Arrays.asList("POST", "GET", "DELETE", "PUT", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Accept"));
+        configuration.setAllowedHeaders(Arrays.asList("Origin", "Authorization", "Content-Type", "Accept"));
 
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", configuration);

@@ -15,6 +15,8 @@
           <th>Placa</th>
           <th>Modelo</th>
           <th>Cor</th>
+          <th>Vaga</th>
+          <th>Estacionamento</th>
           <th class="col-acoes">Ações</th>
         </tr>
       </ng-template>
@@ -23,13 +25,16 @@
           <td>{{ veiculo.placa }}</td>
           <td>{{ veiculo.modelo }}</td>
           <td>{{ veiculo.cor }}</td>
+          <td>{{ veiculo.posicao }}</td>
+          <td>{{ veiculo.estacionamentoNome }}</td>
           <td>
             <div class="flex gap-3">
               <button
                 pButton
                 pTooltip="Editar"
                 tooltipPosition="top"
-                [routerLink]="['/veiculos', veiculo.id]"
+                [routerLink]="['/veiculos', veiculo.veiculoId]"
+                [disabled]="naoTemPermissao('ROLE_ADMIN')"
                 >
                 <i class="pi pi-pencil"></i>
               </button>
@@ -39,6 +44,7 @@
                 tooltipPosition="top"
                 class="p-button-danger"
                 (click)="confirmarExclusao(veiculo)"
+                [disabled]="naoTemPermissao('ROLE_ADMIN')"
                 >
                 <i class="pi pi-trash"></i>
               </button>

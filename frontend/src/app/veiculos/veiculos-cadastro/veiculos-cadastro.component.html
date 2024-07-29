@@ -2,6 +2,9 @@
   <form #cadLancamentoForm="ngForm" (ngSubmit)="salvar()">
     <div class="grid">
 
+      <pre>{{ veiculoCadastro | json }}</pre>
+      <pre>{{ veiculoAtualizar | json }}</pre>
+
       <div class="col-12">
         <h1>{{ editando ? 'Edição de' : 'Novo' }} Veículo</h1>
       </div>
@@ -56,6 +59,222 @@
           text="Mínimo de {{ cor.errors?.['minlength']?.requiredLength }} caracteres.">
         </app-message>
       </div>
+
+      <div class="col-12 md:col-6 p-3">
+        <div class="p-inputgroup">
+          <span class="p-float-label">
+            <input
+              name="estacionamentoField"
+              #estacionamentoField="ngModel"
+              readonly
+              required
+              [(ngModel)]="veiculoModel.estacionamentoNome"
+              (input)="estacionamento = $any($event.target).value"
+              type="text"
+              pInputText
+            />
+            <label for="float-input">Estacionamento</label>
+          </span>
+
+          <button
+            (click)="showModalDialogEstacionamento()"
+            type="button"
+            pButton
+            pRipple
+            icon="pi pi-search"
+            styleClass="p-button-warn"
+          ></button>
+        </div>
+      </div>
+
+      <p-dialog
+      header="Pesquisa de Estacionamento"
+      [(visible)]="displayModalEstacionamento"
+      [modal]="true"
+      [style]="{ width: '50vw' }"
+      [draggable]="false"
+      [resizable]="false"
+      >
+      <div>
+        <input
+          type="text"
+          pInputText
+          placeholder="Pesquisar"
+          (input)="tableEstacionamento.filterGlobal($any($event.target).value, 'contains')"
+          style="width: 100%"
+        />
+      </div>
+      <div class="card shadow-3 mt-4 mb-4 p-0">
+        <p-table
+          selectionMode="single"
+          [(selection)]="estacionamento"
+          [responsive]="true"
+          [paginator]="true"
+          [scrollable]="true"
+          [rows]="10"
+          [loading]="loadingEstacionamento"
+          class="w-100"
+          #tableEstacionamento
+          [value]="$any(listaEstacionamento)"
+          [globalFilterFields]="['nome']"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th style="max-width: 10%;">Id</th>
+              <th style="max-width: 90%;">Nome</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-estacionamento>
+            <tr
+              [pSelectableRow]="estacionamento"
+              (click)="displayModalEstacionamento = false"
+            >
+              <td style="max-width: 10%;">
+                <span class="p-column-title">Id</span>
+                {{ estacionamento.id }}
+              </td>
+              <td style="max-width: 45%;">
+                <span class="p-column-title">Nome</span>
+                {{ estacionamento.nome }}
+              </td>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="20">
+                <span>Nenhum registro encontrado</span>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="summary">
+            <div class="">
+              Totalizador: {{ tableEstacionamento.totalRecords }}
+            </div>
+          </ng-template>
+        </p-table>
+      </div>
+        <ng-template pTemplate="footer">
+          <p-button
+            icon="pi pi-times"
+            (click)="displayModalEstacionamento = false"
+            label="Cancelar"
+            styleClass="p-button-text"
+          >
+          </p-button>
+        </ng-template>
+      </p-dialog>
+
+      <div class="col-12 md:col-6 p-3">
+        <div class="p-inputgroup">
+          <span class="p-float-label">
+            <input
+              name="vagaField"
+              #vagaField="ngModel"
+              readonly
+              required
+              [(ngModel)]="veiculoModel.posicao"
+              (input)="vaga = $any($event.target).value"
+              type="text"
+              pInputText
+            />
+            <label for="float-input">Vagas</label>
+          </span>
+
+          <button
+            (click)="showModalDialogVagas()"
+            type="button"
+            pButton
+            pRipple
+            icon="pi pi-search"
+            styleClass="p-button-warn"
+          ></button>
+        </div>
+      </div>
+
+      <p-dialog
+        header="Pesquisa de Vagas"
+        [(visible)]="displayModalVagas"
+        [modal]="true"
+        [style]="{ width: '50vw' }"
+        [draggable]="false"
+        [resizable]="false"
+      >
+        <div class="image-container">
+          <p-image
+            src="../../../assets/estacionamento.svg"
+            alt="Image"
+          />
+        </div>
+        <div>
+          <input
+            type="text"
+            pInputText
+            placeholder="Pesquisar"
+            (input)="tableVagas.filterGlobal($any($event.target).value, 'contains')"
+            style="width: 100%"
+          />
+        </div>
+        <div class="card shadow-3 mt-4 mb-4 p-0">
+          <p-table
+            selectionMode="single"
+            [(selection)]="vaga"
+            [responsive]="true"
+            [paginator]="true"
+            [scrollable]="true"
+            [rows]="10"
+            [loading]="loadingVagas"
+            class="w-100"
+            #tableVagas
+            [value]="$any(listaVagas)"
+            [globalFilterFields]="['posicao']"
+          >
+            <ng-template pTemplate="header">
+              <tr>
+                <th style="max-width: 10%;">Id</th>
+                <th style="max-width: 45%;">Posição</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-vaga>
+              <tr
+                [pSelectableRow]="vaga"
+                (click)="displayModalVagas = false"
+              >
+                <td style="max-width: 10%;">
+                  <span class="p-column-title">Id</span>
+                  {{ vaga.id }}
+                </td>
+                <td style="max-width: 45%;">
+                  <span class="p-column-title">Posição</span>
+                  {{ vaga.posicao }}
+                </td>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td colspan="20">
+                  <span>Nenhum registro encontrado</span>
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="summary">
+              <div class="">
+                Totalizador: {{ tableVagas.totalRecords }}
+              </div>
+            </ng-template>
+          </p-table>
+        </div>
+        <ng-template pTemplate="footer">
+          <p-button
+            icon="pi pi-times"
+            (click)="displayModalVagas = false"
+            label="Cancelar"
+            styleClass="p-button-text"
+          >
+          </p-button>
+        </ng-template>
+      </p-dialog>
 
       <div class="flex justify-content-start align-items-center p-2 gap-3 w-12">
         <button pButton type="submit" label="Salvar"

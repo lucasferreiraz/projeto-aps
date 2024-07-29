@@ -44,7 +44,7 @@ export class VeiculosGridComponent {
   }
 
   excluir(veiculo: any) {
-    this.veiculoService.excluir(veiculo.id)
+    this.veiculoService.remove(veiculo.veiculoId)
       .subscribe(() => {
         if (this.grid.first === 0) {
           this.paginaMudou.emit(0)

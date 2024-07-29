@@ -6,7 +6,9 @@ import { RouterModule } from '@angular/router';
 
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
+import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
+import { ImageModule } from 'primeng/image';
 import { InputMaskModule } from 'primeng/inputmask';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
@@ -35,7 +37,9 @@ import { VeiculosPesquisaComponent } from './veiculos-pesquisa/veiculos-pesquisa
 
     ButtonModule,
     CalendarModule,
+    DialogModule,
     DropdownModule,
+    ImageModule,
     InputNumberModule,
     InputTextModule,
     InputMaskModule,
