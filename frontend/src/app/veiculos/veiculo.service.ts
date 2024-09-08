@@ -16,6 +16,7 @@ export class VeiculoService {
   baseUrl = 'http://localhost:8080/veiculos'
   vagasUrl = 'http://localhost:8080/vagas'
   estacionamentosUrl = 'http://localhost:8080/estacionamentos'
+  ocrUrl = 'http://localhost:8080/ocr/upload'
 
   constructor(
     private http: HttpClient

@@ -8,6 +8,7 @@ import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
+import { FileUploadModule } from 'primeng/fileupload';
 import { ImageModule } from 'primeng/image';
 import { InputMaskModule } from 'primeng/inputmask';
 import { InputNumberModule } from 'primeng/inputnumber';
@@ -47,6 +48,7 @@ import { VeiculosPesquisaComponent } from './veiculos-pesquisa/veiculos-pesquisa
     TableModule,
     TooltipModule,
     MessageModule,
+    FileUploadModule,
 
     SharedModule,
     VeiculosRoutingModule,

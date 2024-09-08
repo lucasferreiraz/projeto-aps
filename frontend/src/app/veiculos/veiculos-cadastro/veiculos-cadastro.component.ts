@@ -87,6 +87,20 @@ export class VeiculosCadastroComponent implements OnInit {
       )
   }
 
+  onUpload(event: any) {
+    const responseBody = event.originalEvent.body;
+
+    if (responseBody && responseBody.text) {
+      this.messageService.add({
+        severity: 'success',
+        detail: 'Upload concluído com sucesso!'
+      });
+      this.veiculo.placa = responseBody.text;
+    } else if (responseBody && responseBody.error) {
+      console.error(responseBody.error);
+    }
+  }
+
   carregarLancamento(id: number) {
     this.veiculoService.buscaPorId(id)
       .subscribe(veiculo => {
