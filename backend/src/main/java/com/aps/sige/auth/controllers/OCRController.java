@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.aps.sige.auth.services.OCRService;
+import com.aps.sige.auth.services.OCR.OCRService;
 
 @RestController
 @RequestMapping("/ocr")

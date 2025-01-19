@@ -122,11 +122,10 @@ public class VeiculoService {
 
     @Transactional
     public VeiculoResponseDto atualizarVeiculo(VeiculoAtualizacaoDto dto) {
-        // Encontra o veículo
+        
         Veiculo veiculo = veiculoRepository.findById(dto.getVeiculoId())
                 .orElseThrow(() -> new RuntimeException("Veículo não encontrado"));
 
-        // Atualiza as informações do veículo
         veiculo.setPlaca(dto.getPlaca());
         veiculo.setModelo(dto.getModelo());
         veiculo.setCor(dto.getCor());
@@ -138,26 +137,21 @@ public class VeiculoService {
             vagaRepository.save(vaga);
         }
 
-        // Encontra a vaga e o estacionamento
         Optional<Vaga> vagaOptional = vagaRepository.findById(dto.getVagaId());
         if (vagaOptional.isPresent()) {
             Vaga vaga = vagaOptional.get();
-
-            // Verifica se a vaga é a mesma do veículo
             if (vaga.getVeiculo() != null && !vaga.getVeiculo().getId().equals(dto.getVeiculoId())) {
                 throw new RuntimeException("A vaga não pertence ao veículo especificado.");
             }
 
-            // Atualiza a vaga e o estacionamento
             Estacionamento estacionamento = estacionamentoRepository.findById(dto.getEstacionamentoId())
                     .orElseThrow(() -> new RuntimeException("Estacionamento não encontrado"));
 
-            // Desassociar o veículo da vaga antiga
             if (vaga.getVeiculo() != null) {
-                vaga.setVeiculo(null); // Define a vaga do veículo como null
+                vaga.setVeiculo(null);
             }
 
-            vaga.setVeiculo(veiculo); // Associa o veículo à nova vaga
+            vaga.setVeiculo(veiculo); 
             vaga.setEstacionamento(estacionamento);
 
             vagaRepository.save(vaga);
@@ -165,10 +159,8 @@ public class VeiculoService {
             throw new RuntimeException("Vaga não encontrada");
         }
 
-        // Atualiza o veículo
         veiculoRepository.save(veiculo);
 
-        // Cria o DTO para resposta
         Vaga vagaAtualizada = vagaRepository.findById(dto.getVagaId())
                 .orElseThrow(() -> new RuntimeException("Vaga não encontrada após atualização"));
 
