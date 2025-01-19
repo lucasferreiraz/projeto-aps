@@ -11,6 +11,10 @@ const routes: Routes = [
     loadChildren: () => import('./veiculos/veiculos.module').then(m => m.VeiculosModule)
   },
   {
+    path: 'mapas',
+    loadChildren: () => import('./mapa/mapa.module').then(m => m.MapaModule)
+  },
+  {
     path: 'pagina-nao-encontrada',
     component: PaginaNaoEncontradaComponent,
     canActivate: [authGuard],

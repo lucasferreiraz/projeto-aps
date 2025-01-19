@@ -49,3 +49,13 @@ export class Estacionamento {
   id?: number;
   nome?: string;
 }
+
+export class Local {
+  lat!: number;
+  lng!: number;
+  nome!: string;
+}
+
+export class InfoLocal {
+  constructor(public latlng: string, public nome: string) { }
+}
