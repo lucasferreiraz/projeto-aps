@@ -1,5 +1,29 @@
-<app-mapa-local
-  [nome]="infoLocal.nome"
-  [latlng]="infoLocal.latlng"
-  *ngIf="infoLocal">
-</app-mapa-local>
+<div class="container">
+  <div class="grid">
+    <div class="col-12 md:col-12">
+      <h1>Informações do Local</h1>
+    </div>
+
+    <div class="col-12 md:col-12">
+      <app-mapa-local
+        [nome]="infoLocal.nome"
+        [latlng]="infoLocal.latlng"
+        *ngIf="infoLocal">
+      </app-mapa-local>
+      <p-button class="botao" label="Primary"/>
+    </div>
+
+    <div class="col-12 md:col-12">
+      <p-card [header]="infoLocal.nome" class="padding-top: 500px">
+        <p-rating [(ngModel)]="stars" [readonly]="true" [cancel]="false" />
+        <p-divider />
+        <p class="m-0">
+          <b>Endereço:</b> <br>
+          Rua Barão do Rio Branco, 1000 <br>
+          Centro, Fortaleza - CE <br>
+          CEP: 60025-061 <br>
+        </p>
+      </p-card>
+    </div>
+  </div>
+</div>
