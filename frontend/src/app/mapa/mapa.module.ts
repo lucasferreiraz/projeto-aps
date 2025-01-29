@@ -17,7 +17,10 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { RatingModule } from 'primeng/rating';
 import { SelectButtonModule } from 'primeng/selectbutton';
+import { SliderModule } from 'primeng/slider';
 import { TableModule } from 'primeng/table';
+import { TabMenuModule } from 'primeng/tabmenu';
+import { TabViewModule } from 'primeng/tabview';
 import { TooltipModule } from 'primeng/tooltip';
 import { SharedModule } from '../shared/shared.module';
 import { InfoLocalComponent } from './info-local/info-local.component';
@@ -46,7 +49,10 @@ import { MapaRoutingModule } from './mapa-routing.module';
     RatingModule,
     DividerModule,
     SelectButtonModule,
+    SliderModule,
     TableModule,
+    TabMenuModule,
+    TabViewModule,
     TooltipModule,
     MessageModule,
     FileUploadModule,

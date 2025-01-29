@@ -11,6 +11,19 @@ export class InfoLocalComponent implements OnInit {
 
   infoLocal!: InfoLocal;
   stars = 4.5;
+  sliderValue: number = 0;
+  valorHora: number = 9;
+  valorDiaria: number = 34;
+
+  horaAtual: string = '';
+  dataAtual: string = '';
+  checkOutHora: string = '';
+  checkOutData: string = '';
+
+  checkInDataDiaria: string = '';
+  checkOutDataDiaria: string = '';
+
+  displayModal: boolean = false;
 
   locais: Local[] = [
     { lat: -3.7403433, lng: -38.530471, nome: 'Estacionamento 1' },
@@ -34,6 +47,9 @@ export class InfoLocalComponent implements OnInit {
   ngOnInit(): void {
     const latlng = this.route.snapshot.paramMap.get('latlng');
     this.obterInfoLocal(latlng);
+
+    this.atualizarHorario();
+    setInterval(() => this.atualizarHorario(), 1000);
   }
 
   obterInfoLocal(latlng) {
@@ -44,6 +60,41 @@ export class InfoLocalComponent implements OnInit {
       (local.lat === lat && local.lng === lng));
 
     this.infoLocal = new InfoLocal(`${lat},${lng}`, local!.nome)
+  }
+
+  showModal() {
+    this.displayModal = true;
+  }
+
+  atualizarHorario() {
+    const agora = new Date();
+    this.horaAtual = agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+    this.dataAtual = agora.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
+
+    this.calcularCheckOutRotativo();
+    this.calcularCheckOutDiaria();
+  }
+
+  calcularCheckOutRotativo() {
+    const agora = new Date();
+    agora.setHours(agora.getHours() + this.sliderValue);
+    this.checkOutHora = agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+    this.checkOutData = agora.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
+  }
+
+  calcularCheckOutDiaria() {
+    const agora = new Date();
+    this.checkInDataDiaria = agora.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
+    agora.setDate(agora.getDate() + this.sliderValue);
+    this.checkOutDataDiaria = agora.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
+  }
+
+  get valorHoraTotal(): number {
+    return this.valorHora * this.sliderValue;
+  }
+
+  get valorDiariaTotal(): number {
+    return this.valorDiaria * this.sliderValue;
   }
 
   voltar() {

@@ -4,3 +4,36 @@
   right: 400px;
   z-index: 500;
 }
+
+.horario-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.horario-box {
+  width: 48%; /* Garante que os dois quadrados fiquem lado a lado */
+  padding: 15px;
+  text-align: center;
+  background-color: #f4f4f4;
+  border-radius: 8px;
+}
+
+.horario-titulo {
+  font-size: 14px;
+  font-weight: bold;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.horario-hora {
+  font-size: 22px;
+  font-weight: bold;
+  color: #007ad9;
+  margin: 5px 0;
+}
+
+.horario-data {
+  font-size: 14px;
+  color: #666;
+}
