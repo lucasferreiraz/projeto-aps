@@ -26,6 +26,7 @@ import { SharedModule } from '../shared/shared.module';
 import { InfoLocalComponent } from './info-local/info-local.component';
 import { MapaLocalComponent } from './mapa-local/mapa-local.component';
 import { MapaRoutingModule } from './mapa-routing.module';
+import { AngularToastifyModule, ToastService } from 'angular-toastify';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { MapaRoutingModule } from './mapa-routing.module';
     FormsModule,
     RouterModule,
 
+    AngularToastifyModule,
     ButtonModule,
     CalendarModule,
     CardModule,
@@ -59,6 +61,7 @@ import { MapaRoutingModule } from './mapa-routing.module';
 
     SharedModule,
     MapaRoutingModule
-  ]
+  ],
+  providers: [ToastService],
 })
 export class MapaModule { }

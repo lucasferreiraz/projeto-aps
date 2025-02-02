@@ -3,3 +3,11 @@
   width: 100%;
 
 }
+
+:host ::ng-deep .leaflet-routing-container {
+  background-color: white !important;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  color: black !important;
+}

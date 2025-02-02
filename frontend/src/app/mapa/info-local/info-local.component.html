@@ -4,10 +4,11 @@
       <h1>Informações do Local</h1>
     </div>
 
-    <div class="col-12 md:col-12">
+    <div class="col-12 md:col-12 mapa-container">
       <app-mapa-local
         [nome]="infoLocal.nome"
         [latlng]="infoLocal.latlng"
+        [corLinha]="corLinha"
         *ngIf="infoLocal">
       </app-mapa-local>
       <p-button
@@ -88,7 +89,7 @@
         </p-button>
         <p-button
           [disabled]="sliderValue <= 0"
-          (click)="displayModal = false"
+          (click)="confirmar()"
           label="Solicitar"
         >
         </p-button>
@@ -109,3 +110,5 @@
     </div>
   </div>
 </div>
+
+<lib-toastify-toast-container [autoClose]="0"></lib-toastify-toast-container>

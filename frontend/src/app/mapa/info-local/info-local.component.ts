@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastService } from 'angular-toastify';
 import { InfoLocal, Local } from 'src/app/core/model';
 
 @Component({
@@ -8,6 +9,8 @@ import { InfoLocal, Local } from 'src/app/core/model';
   styleUrls: ['./info-local.component.css']
 })
 export class InfoLocalComponent implements OnInit {
+
+  corLinha: string = 'blue';
 
   infoLocal!: InfoLocal;
   stars = 4.5;
@@ -41,7 +44,8 @@ export class InfoLocalComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private toastService: ToastService
   ) { }
 
   ngOnInit(): void {
@@ -50,6 +54,12 @@ export class InfoLocalComponent implements OnInit {
 
     this.atualizarHorario();
     setInterval(() => this.atualizarHorario(), 1000);
+  }
+
+  confirmar() {
+    this.displayModal = false
+    this.corLinha = this.corLinha === 'blue' ? 'green' : 'green';
+    this.toastService.success('Vaga reservada! Prossiga para o local.');
   }
 
   obterInfoLocal(latlng) {

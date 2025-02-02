@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import * as L from 'leaflet';
+import 'leaflet-routing-machine';
 import { Local } from 'src/app/core/model';
 
 @Component({
@@ -10,6 +11,7 @@ import { Local } from 'src/app/core/model';
 })
 export class MapaComponent implements OnInit, OnDestroy {
 
+  roteador: any;
   mapa: any;
 
   locais: Local[] = [
@@ -39,6 +41,8 @@ export class MapaComponent implements OnInit, OnDestroy {
     }).addTo(this.mapa);
 
     this.adicionarMarkers()
+    this.adicionarMarcadorUsuario();
+    this.mostrarRotaParaEstacionamento();
   }
 
   adicionarMarkers() {
@@ -47,6 +51,46 @@ export class MapaComponent implements OnInit, OnDestroy {
     markers.forEach(marker => marker.on('click',
       (e) => this.onMarkerClick(e, this.locais))
     );
+  }
+
+  adicionarMarcadorUsuario() {
+
+    const coordenadasUsuario: [number, number] = [-3.749742, -38.516059];
+
+    const usuarioIcon = L.icon({
+      iconUrl: 'assets/icons/marker-icon-red.png',
+      shadowUrl: 'assets/icons/marker-shadow.png',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      shadowSize: [41, 41]
+    });
+
+    L.marker(coordenadasUsuario, { icon: usuarioIcon })
+      .addTo(this.mapa)
+      .bindPopup('<b>Você está aqui!</b>')
+      .openPopup();
+  }
+
+  mostrarRotaParaEstacionamento() {
+    const coordenadasUsuario: [number, number] = [-3.749742, -38.516059];
+    const destino: [number, number] = [-3.7468554, -38.515420];
+
+    this.roteador = L.Routing.control({
+      waypoints: [
+        L.latLng(coordenadasUsuario),
+        L.latLng(destino)
+      ],
+      routeWhileDragging: false,
+      fitSelectedRoutes: false,
+      show: false,
+      lineOptions: {
+        styles: [{ color: 'blue', opacity: 0.7, weight: 5 }],
+        extendToWaypoints: true,
+        missingRouteTolerance: 10,
+      } as L.Routing.LineOptions,
+      createMarker: () => null
+    } as unknown as L.Routing.RoutingControlOptions).addTo(this.mapa);
   }
 
   onMarkerClick(e: any, locais: Local[]) {
